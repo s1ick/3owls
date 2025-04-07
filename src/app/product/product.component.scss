@@ -1,0 +1,263 @@
+.product-card {
+  width: 100%; 
+  max-width: 332px;
+  margin: 0; 
+  position: relative;
+  font-family: "Futura PT", sans-serif;
+  transition: all 0.3s ease;
+  &:hover {
+    .product-card__img {
+      transform: scale(1.3);
+    }
+    .product-footer {
+      display: flex;
+    }
+    .product-card__sizes-container {
+      display: flex;
+      opacity: 1;
+      z-index: 10;
+      position: absolute;
+      bottom: -80px;
+      left: -16px;
+      right: -16px;
+      padding: 16px;
+      background: var(--color-white);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  &__badge {
+    color: var(--color-sale);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: var(--color-white);
+    width: 41px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    z-index: 2;
+    border-radius: 4px;
+  }
+
+  &__image {
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 14px;
+    max-height: 444px;
+    position: relative;
+    background-color: var(--color-gray-light);
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease-in-out;
+    display: block;
+  }
+
+  &__favorite {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+
+    svg {
+      width: 20px;
+      height: 17px;
+      transition: all 0.2s ease;
+      path.inner {
+        fill: #fff; 
+      }
+      path.heart-outline {
+        stroke: #2d2d2d;
+        stroke-linejoin: round;
+        transition: all 0.2s ease;
+      }
+    }
+
+      svg.active path.heart-outline {
+        
+        stroke: white; 
+    }
+    svg.active path.heart-inner {
+        
+        fill: var(--color-sale); 
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      background: transparent;
+    }
+  }
+  &__title {
+    color: var(--color-dark);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.26;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+    min-height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__prices {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  &__old-price {
+    color: var(--color-dark);
+    opacity: 0.7;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: line-through;
+  }
+
+  &__new-price {
+    color: var(--color-sale);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &__sizes-container {
+    display: none;
+    opacity: 0;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+  }
+
+  &__sizes-title {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+    color: var(--color-dark);
+    margin-bottom: 8px;
+  }
+
+  &__sizes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__size {
+    color: var(--color-dark);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    padding: 2px 8px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      border-color: var(--color-dark);
+    }
+    &.selected {
+        border-color: var(--color-sale);
+        background-color: rgba(208, 19, 69, 0.05);
+        color: var(--color-sale);
+        font-weight: 500;
+      }
+  }
+
+  &__button {
+    width: 100px;
+    padding: 12px 0;
+    background: var(--color-dark);
+    color: var(--color-white);
+    border: none;
+    border-radius: 4px;
+    font-family: "Futura PT", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: var(--color-dark-light);
+    }
+
+    .material-icons {
+      margin-right: 8px;
+      font-size: 20px;
+    }
+  }
+}
+
+
+.product-footer {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: stretch;
+  display: none;
+  position: absolute;
+  z-index: 100;
+  background: #fff;
+  padding: 12px;
+  left: -12px;
+  right: -12px;
+  bottom: -74px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    width: 300px;
+    margin-bottom: 24px;
+
+    &__title {
+      font-size: 17px;
+      min-height: 44px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    width: 100%;
+    max-width: 350px;
+
+    &:hover {
+      .product-card__sizes-container {
+        bottom: -72px;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+}
