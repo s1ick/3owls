@@ -1,10 +1,9 @@
 export interface Product {
-    id: number;
-    image: number;
-    description: string;
-    sale: number;
-    oldPrice: number;
-    newPrice: number;
-    sizes: string[];
-    isFavorite?: boolean;
+  id: number;
+  image: string | number;
+  description: string;
+  oldPrice: number;
+  newPrice: number;
+  sizes: string[];
+  isFavorite: boolean;
   }

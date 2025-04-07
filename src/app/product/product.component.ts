@@ -22,11 +22,17 @@ export class ProductComponent implements AfterViewInit {
   isImageLoaded = false;
 
   get hasDiscount(): boolean {
-    return !!this.product.sale && this.product.sale > 0;
+    return this.product.newPrice < this.product.oldPrice;
   }
 
   get discountPercentage(): string {
-    return `-${this.product.sale}%`;
+    return `${this.calculateSale()}%`;
+  }
+
+  calculateSale(): number {
+    return Math.round(
+      ((this.product.oldPrice - this.product.newPrice) / this.product.oldPrice) * 100
+    );
   }
 
   getImageUrl(imageName: string): string {

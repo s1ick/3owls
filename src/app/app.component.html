@@ -1,5 +1,21 @@
-<div class="wrapper">
-  @for (product of products; track product.id) {
-    <app-product [product]="product"></app-product>
-  }
+<div
+  class="wrapper"
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll()"
+  cdkDropList
+  (cdkDropListDropped)="drop($event)"
+>
+  <app-product
+    *ngFor="let product of visibleProducts; trackBy: trackById"
+    [product]="product"
+    cdkDrag
+    @fadeIn
+  ></app-product>
+
+  <div class="loader" *ngIf="loading">
+    <div class="spinner"></div>
+    Загрузка...
+  </div>
 </div>
