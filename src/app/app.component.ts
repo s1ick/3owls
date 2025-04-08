@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductComponent } from './product/product.component';
 import { CommonModule } from '@angular/common';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ProductService } from './product.service';
-import { Product } from './product/product.interface';
+import { ProductComponent } from './components/product/product.component';
+import { Product } from './models/product.interface';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
   visibleProducts: Product[] = [];
   batchSize = 8;
   loading = false;
-
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
