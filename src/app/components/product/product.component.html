@@ -2,9 +2,9 @@
   class="product-card"
   [class.product-card--favorite]="product.isFavorite"
 >
-  @if (hasDiscount) {
+  @if (hasDiscount()) {
   <div class="product-card__badge">
-    {{ product.oldPrice | sale : product.newPrice }} 
+    {{ product.oldPrice | sale : product.newPrice }}
   </div>
   }
 
@@ -18,7 +18,7 @@
       [attr.data-src]="getImageUrl(product.image.toString())"
       src="{{pathImages}}placeholder.webp"
       loading="lazy"
-      [class.loaded]="isImageLoaded"
+      [class.loaded]="isImageLoaded()"
     />
     <button class="product-card__favorite" (click)="toggleFavorite($event)">
       <svg
@@ -49,7 +49,7 @@
     <h3 class="product-card__title">{{ product.description }}</h3>
 
     <div class="product-card__prices">
-      @if (hasDiscount) {
+      @if (hasDiscount()) {
       <span class="product-card__old-price">
         {{ product.oldPrice | number }} ₽
       </span>
@@ -67,7 +67,7 @@
         @for (size of product.sizes; track size) {
         <span
           class="product-card__size"
-          [class.selected]="selectedSize === size"
+          [class.selected]="selectedSize() === size"
           (click)="selectSize(size, $event)"
         >
           {{ size }}

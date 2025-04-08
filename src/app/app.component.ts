@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductComponent } from './product/product.component';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ProductService } from './product.service';
-import { Product } from './product/product.interface';
+import { ProductComponent } from './components/product/product.component';
+import { Product } from './models/product.interface';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { Product } from './product/product.interface';
   imports: [
     CommonModule,
     ProductComponent,
-    InfiniteScrollDirective,
+    InfiniteScrollModule,
     CdkDrag,
     CdkDropList
   ],
@@ -29,43 +29,52 @@ import { Product } from './product/product.interface';
   ]
 })
 export class AppComponent implements OnInit {
-  allProducts: Product[] = [];
-  visibleProducts: Product[] = [];
-  batchSize = 8;
-  loading = false;
+  private productService = inject(ProductService);
 
-  constructor(private productService: ProductService) {}
+  allProducts = signal<Product[]>([]);
+  visibleProducts = signal<Product[]>([]);
+  loading = signal(false);
+
+  batchSize = 8;
+
+  canLoadMore = computed(() =>
+    !this.loading() && this.visibleProducts().length < this.allProducts().length
+  );
 
   ngOnInit() {
-    this.allProducts = this.productService.generateProducts(100);
+    this.allProducts.set(this.productService.generateProducts(100));
     this.loadMore();
   }
 
   onScroll() {
-    if (!this.loading && this.visibleProducts.length < this.allProducts.length) {
+    if (this.canLoadMore()) {
       this.loadMore();
     }
   }
 
   loadMore() {
-    this.loading = true;
-    const nextBatch = this.allProducts.slice(
-      this.visibleProducts.length,
-      this.visibleProducts.length + this.batchSize
+    this.loading.set(true);
+
+    const currentVisible = this.visibleProducts();
+    const all = this.allProducts();
+
+    const nextBatch = all.slice(
+      currentVisible.length,
+      currentVisible.length + this.batchSize
     );
 
     setTimeout(() => {
-      this.visibleProducts = [...this.visibleProducts, ...nextBatch];
-      this.loading = false;
+      this.visibleProducts.update(products => [...products, ...nextBatch]);
+      this.loading.set(false);
     }, 800);
   }
 
   drop(event: CdkDragDrop<Product[]>) {
-    moveItemInArray(
-      this.visibleProducts,
-      event.previousIndex,
-      event.currentIndex
-    );
+    this.visibleProducts.update(products => {
+      const updatedProducts = [...products];
+      moveItemInArray(updatedProducts, event.previousIndex, event.currentIndex);
+      return updatedProducts;
+    });
   }
 
   trackById(index: number, item: Product): number {

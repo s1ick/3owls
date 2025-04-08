@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { ProductComponent } from './product.component';
 import { userEvent, within, expect } from '@storybook/test';
 import { Product } from '../../models/product.interface';
+import { fn } from '@storybook/test';
 
 /**
  * Фабрика для создания тестовых продуктов
@@ -27,7 +28,7 @@ const meta: Meta<ProductComponent> = {
   render: (args) => ({
     props: {
       ...args,
-      toggleFavorite: args.toggleFavorite || (() => {}),
+      toggleFavorite: args.toggleFavorite || fn(),
     },
   }),
   argTypes: {
@@ -45,7 +46,7 @@ const meta: Meta<ProductComponent> = {
     },
   },
   args: {
-    product: createProduct(), // Дефолтные данные
+    product: createProduct(),
   },
 };
 
@@ -93,10 +94,13 @@ export const FewSizes: Story = {
  * Интерактивный тест - переключение избранного
  */
 export const ToggleFavorite: Story = {
+  args: {
+    toggleFavorite: fn(),
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: /избранное/i });
-    
+
     await userEvent.click(button);
     await expect(args.toggleFavorite).toHaveBeenCalled();
   },
@@ -109,7 +113,7 @@ export const SelectSize: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const sizeButton = canvas.getByText('M');
-    
+
     await userEvent.click(sizeButton);
     await expect(sizeButton).toHaveClass('selected');
   },
@@ -123,5 +127,17 @@ export const MobileView: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+  },
+};
+
+/**
+ * Новый story - товар без скидки
+ */
+export const WithoutDiscount: Story = {
+  args: {
+    product: createProduct({
+      oldPrice: 3000,
+      newPrice: 3000,
+    }),
   },
 };

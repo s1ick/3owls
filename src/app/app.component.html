@@ -8,14 +8,17 @@
   (cdkDropListDropped)="drop($event)"
 >
   <app-product
-    *ngFor="let product of visibleProducts; trackBy: trackById"
+    *ngFor="let product of visibleProducts(); trackBy: trackById"
     [product]="product"
     cdkDrag
     @fadeIn
   ></app-product>
-
-  <div class="loader" *ngIf="loading">
-    <div class="spinner"></div>
-    Загрузка...
-  </div>
 </div>
+
+@if (loading()) {
+  <div class="dots-loader">
+    @for (i of [1,2,3,4]; track i) {
+      <div class="dots-loader__dot"></div>
+    }
+  </div>
+}
